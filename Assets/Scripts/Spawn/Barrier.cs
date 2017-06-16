@@ -4,7 +4,7 @@ using System.Collections;
 public class Barrier: MonoBehaviour
 {
 
-    private static long _destroyDelay = 5L;
+    private static long _destroyDelay = 3L;
 
     private void OnTriggerExit(Collider other)
     {
