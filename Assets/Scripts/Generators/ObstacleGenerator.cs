@@ -1,20 +1,26 @@
 using UnityEngine;
 using System.Collections;
-using System;
 
 public class ObstacleGenerator: Generator
 {
     private GameObject _prefab;
+    private Transform[] _positions;
 
-    public ObstacleGenerator(GameObject prefab) {
+    public ObstacleGenerator(GameObject prefab, Transform[] positions) {
         _prefab = prefab;
+        _positions = positions;
     }
 
-    public GameObject Generate(string tag)
+    public GameObject Generate(string tag, Transform parent)
     {
-        GameObject obstacle = GameObject.Instantiate(_prefab);
-        //wall.transform.parent = platform.transform;
-        //wall.transform.Translate(new Vector3(Random.Range(-15, 15), 0, 5));
+        if (Random.Range(0, 100) < 70) return null;
+        GameObject obstacle = GameObject.Instantiate(_prefab, GetPosition());
+        obstacle.transform.parent = parent;
         return obstacle;
+    }
+
+    private Transform GetPosition() {
+        int randomSpawnPoint = Random.Range(0, _positions.Length);
+        return _positions[randomSpawnPoint];
     }
 }
