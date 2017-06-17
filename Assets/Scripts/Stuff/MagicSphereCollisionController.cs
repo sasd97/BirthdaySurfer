@@ -12,7 +12,7 @@ public class MagicSphereCollisionController: MonoBehaviour
     [SerializeField] private GameObject _participlePrefab;
     [SerializeField] private long participleObjectLifeDuration = 3L;
 
-	private void OnTriggerExit(Collider other)
+	private void OnTriggerEnter(Collider other)
 	{
         if (other.tag != _destroyerTag) return;
         GameObject p = Instantiate(_participlePrefab, this.transform.position, this.transform.rotation);
