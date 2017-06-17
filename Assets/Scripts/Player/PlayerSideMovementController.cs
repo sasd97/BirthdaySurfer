@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[AddComponentMenu("Player/Side Movement Script")]
 public class PlayerSideMovementController: MonoBehaviour {
+
+	private PlayerInput _playerInput;
 
     [Header("Area Attributes")]
     [SerializeField] private int _characterStartPositionIndex = 1;
     [SerializeField] private int[] _characterPositions;
-
-    private PlayerInput _playerInput;
 
     private void Awake()
     {
@@ -23,6 +24,7 @@ public class PlayerSideMovementController: MonoBehaviour {
         if (IsMovingLeft())
         {
             this.transform.position = MoveLeft();
+            return;
         }
 
         if (IsMovingRight()) 
@@ -41,13 +43,11 @@ public class PlayerSideMovementController: MonoBehaviour {
 
     private Vector3 MoveLeft() {
         _characterStartPositionIndex = Mathf.Clamp(_characterStartPositionIndex - 1, 0, _characterPositions.Length - 1);
-        Debug.Log(_characterStartPositionIndex);
         return new Vector3(_characterPositions[_characterStartPositionIndex], 0, this.transform.position.z);
     }
 
     private Vector3 MoveRight() {
         _characterStartPositionIndex = Mathf.Clamp(_characterStartPositionIndex + 1, 0, _characterPositions.Length - 1);
-        Debug.Log(_characterStartPositionIndex);
         return new Vector3(_characterPositions[_characterStartPositionIndex], 0, this.transform.position.z);
     }
 }

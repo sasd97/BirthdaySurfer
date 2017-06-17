@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[AddComponentMenu("Player/Movement Stabilizer")]
 public class PlayerStabilizer: MonoBehaviour {
 
 	void Update () {
