@@ -7,6 +7,7 @@ public class UiManager: MonoBehaviour
 {
     [Header("UI References")]
     [SerializeField] private Text _scoreText;
+    [SerializeField] private Text _currentMusicText;
 
     [Header("UI Service References")]
     [SerializeField] private Text _debugInfoText;
@@ -15,6 +16,7 @@ public class UiManager: MonoBehaviour
     {
         InitDebugAssemblyInfo();
         Messenger.AddListener(EventsConfig.CollectMagicSphereEvent, OnUpdateScore);
+        Messenger<string>.AddListener(EventsConfig.NextSong, OnUpdateCurrentMusic);
     }
 
     private void InitDebugAssemblyInfo() {
@@ -35,6 +37,12 @@ public class UiManager: MonoBehaviour
     private void OnUpdateScore() 
     {
         int score = GameManager.GetInstance().GetScore();
-        _scoreText.text = string.Format("Score: <b>{0}</b>", score);
+        int record = GameManager.GetInstance().GetRecord();
+        _scoreText.text = string.Format("Score: <b>{0}</b>\nRecord: <b>{1}</b>", score, record);
+    }
+
+    private void OnUpdateCurrentMusic(string title) 
+    {
+        _currentMusicText.text = string.Format("Currently playing:  <i>{0}</i>", title);
     }
 }

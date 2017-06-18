@@ -6,6 +6,7 @@ public class GameManager
     private static GameManager _instance;
 
     private int _score = 0;
+    private int _record = PlayerPrefs.GetInt(PrefsConfigs.RecordPrefs, 0);
 
     private GameManager() 
     {
@@ -20,10 +21,19 @@ public class GameManager
     public void IncreaseScore() 
     {
         _score++;
+        if (_score > _record) _record = _score;
     }
 
     public int GetScore()
     {
         return _score;
+    }
+
+    public void SaveRecord() {
+        PlayerPrefs.SetInt(PrefsConfigs.RecordPrefs, _record);
+    }
+
+    public int GetRecord() {
+        return _record;
     }
 }
