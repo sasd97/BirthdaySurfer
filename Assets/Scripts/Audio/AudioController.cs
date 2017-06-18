@@ -47,4 +47,9 @@ public class AudioController: MonoBehaviour
     void Stop() {
         source.Stop();
     }
+
+    private void OnDestroy()
+    {
+        Messenger.RemoveListener(EventsConfig.StopSong, Stop);
+    }
 }

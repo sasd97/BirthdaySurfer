@@ -15,6 +15,7 @@ public class UiManager: MonoBehaviour
     private void Awake()
     {
         InitDebugAssemblyInfo();
+        OnUpdateScore();
         Messenger.AddListener(EventsConfig.CollectMagicSphereEvent, OnUpdateScore);
         Messenger<string>.AddListener(EventsConfig.NextSong, OnUpdateCurrentMusic);
     }
@@ -44,5 +45,11 @@ public class UiManager: MonoBehaviour
     private void OnUpdateCurrentMusic(string title) 
     {
         _currentMusicText.text = string.Format("Currently playing:  <i>{0}</i>", title);
+    }
+
+    private void OnDestroy()
+    {
+        Messenger.RemoveListener(EventsConfig.CollectMagicSphereEvent, OnUpdateScore);
+        Messenger<string>.RemoveListener(EventsConfig.NextSong, OnUpdateCurrentMusic);
     }
 }

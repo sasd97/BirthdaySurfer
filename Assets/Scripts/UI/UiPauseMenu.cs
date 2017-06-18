@@ -8,7 +8,7 @@ public class UiPauseMenu: MonoBehaviour
 	public string menuSceneName = "MainMenu";
     public AudioController audioController;
 
-    public UIFade sceneFader;
+    public UiFade sceneFader;
 
 	void Update()
 	{

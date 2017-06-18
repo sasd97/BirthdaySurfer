@@ -18,6 +18,11 @@ public class GameManager
         return _instance;
     }
 
+    public void OnReset() 
+    {
+        _score = 0;    
+    }
+
     public void IncreaseScore() 
     {
         _score++;

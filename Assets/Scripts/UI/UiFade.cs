@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class UIFade: MonoBehaviour
+public class UiFade: MonoBehaviour
 {
 
     [Header("Fade Attributes")]

@@ -3,6 +3,7 @@ using System.Collections;
 
 public class TagsConfig
 {
+    public const string Untagged = "Untagged";
     public const string PlayerTag = "Player";
     public const string ObstacleTag = "Obstacle";
     public const string PlatfromTag = "Platform";
