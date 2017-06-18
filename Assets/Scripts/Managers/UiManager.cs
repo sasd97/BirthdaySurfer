@@ -8,31 +8,18 @@ public class UiManager: MonoBehaviour
     [Header("UI References")]
     [SerializeField] private Text _scoreText;
     [SerializeField] private Text _currentMusicText;
-
-    [Header("UI Service References")]
-    [SerializeField] private Text _debugInfoText;
+    [SerializeField] private Text _distanceText;
 
     private void Awake()
     {
-        InitDebugAssemblyInfo();
         OnUpdateScore();
         Messenger.AddListener(EventsConfig.CollectMagicSphereEvent, OnUpdateScore);
         Messenger<string>.AddListener(EventsConfig.NextSong, OnUpdateCurrentMusic);
+        Messenger<float>.AddListener(EventsConfig.PlayerDistanceChanedEvent, OnDistanceChanged);
     }
 
-    private void InitDebugAssemblyInfo() {
-        if (!Debug.isDebugBuild) {
-            Destroy(_debugInfoText);
-            return;
-        }
-
-        string text = string.Format(
-            "Debug Build Info\nFor developers purposes only\nBuild <b>{0}</b>\nVersion <b>{1}</b>\nA.Dadukin, 2017",
-            Application.buildGUID,
-            Application.version
-        );
-
-        _debugInfoText.text = text;
+    private void OnDistanceChanged(float distance) {
+        _distanceText.text = string.Format("<b>{0:0.00}</b> m", distance / 100);
     }
 
     private void OnUpdateScore() 
@@ -51,5 +38,7 @@ public class UiManager: MonoBehaviour
     {
         Messenger.RemoveListener(EventsConfig.CollectMagicSphereEvent, OnUpdateScore);
         Messenger<string>.RemoveListener(EventsConfig.NextSong, OnUpdateCurrentMusic);
-    }
+        Messenger<float>.RemoveListener(EventsConfig.PlayerDistanceChanedEvent, OnDistanceChanged);
+
+}
 }
