@@ -1,55 +1,65 @@
 using UnityEngine;
-using System.Collections;
 
 [RequireComponent(typeof(AudioSource))]
+[AddComponentMenu("Audio/Playlist Controller")]
 public class AudioController: MonoBehaviour
 {
-    private int currentIndex = 0;
-    [SerializeField] private AudioClip[] clips;
+    private int _playingIndex;
+    private AudioSource _audioSource;
 
-    private AudioSource source;
+    [Header("Playlist Attributes")]
+    [SerializeField] private AudioClip[] _clipsCollection;
+    [SerializeField] private float _maxVolumeLevel = 0.7f;
+    [SerializeField] private float _minVolumeLevel = 0.2f;
 
     private void Awake()
     {
-        source = GetComponent<AudioSource>();
-        Messenger.AddListener(EventsConfig.StopSong, Stop);
-    }
+        _audioSource = GetComponent<AudioSource>();
+        _audioSource.volume = _maxVolumeLevel;
 
-    void Start()
-	{
-        PlayNext();
-	}
+        Messenger.AddListener(EventsConfig.OnStopSong, Stop);
+    }
 
     void Update()
     {
-        if (!source.isPlaying) PlayNext();
+        bool isGameStarted = StateManager.GetInstance().StateNot(StateManager.States.AWAITING_START);
+        if (!_audioSource.isPlaying && isGameStarted) PlayNext();
     }
 
-    private void PlayNext() {
-		currentIndex = Random.Range(0, clips.Length);
-		source.clip = clips[currentIndex];
-		source.Play();
-        Messenger<string>.Broadcast(EventsConfig.NextSong, clips[currentIndex].name);
+    public void PlayNext() {
+        if (_clipsCollection.Length == 0) return;
+		_playingIndex = Random.Range(0, _clipsCollection.Length);
+		_audioSource.clip = _clipsCollection[_playingIndex];
+        Messenger<string>.Broadcast(EventsConfig.OnNextSong, GetCurrentSongName());
+		_audioSource.Play();
 	}
 
-    public void UpVolume() {
-        source.volume = 1.0f;
+    public AudioClip GetCurrent() {
+        return _clipsCollection[_playingIndex];
     }
 
-    public void LowVolume() {
-        source.volume = 0.2f;
+    public void SetVolumeToMax() {
+        SetVolumeTo(_maxVolumeLevel);
     }
 
-    void Pause() {
-        
+    public void SetVolumeToMin() {
+        SetVolumeTo(_minVolumeLevel);
     }
 
-    void Stop() {
-        source.Stop();
+    public void Stop() {
+        _audioSource.Stop();
+    }
+
+    private string GetCurrentSongName() {
+        return GetCurrent().name;
+    }
+
+    private void SetVolumeTo(float value) {
+        _audioSource.volume = value;
     }
 
     private void OnDestroy()
     {
-        Messenger.RemoveListener(EventsConfig.StopSong, Stop);
+        Messenger.RemoveListener(EventsConfig.OnStopSong, Stop);
     }
 }

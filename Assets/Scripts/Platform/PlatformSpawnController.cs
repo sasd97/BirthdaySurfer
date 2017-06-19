@@ -28,7 +28,7 @@ public class PlatformSpawnController: MonoBehaviour {
         _platformGenerator = new PlatformGenerator(_platformPrefab);
         _obstacleGenerator = new ObstacleGenerator(_obstaclePrefab, _obstaclePositions);
         _magicSphereGenerator = new MagicSphereGenerator(_magicSpherePrefab, _magicSpherePositions);
-        Messenger.AddListener(EventsConfig.PlatformSpawnEvent, SpawnPlatformGroup);
+        Messenger.AddListener(EventsConfig.OnPlatformSpawnEvent, SpawnPlatformGroup);
     }
 
     void SpawnPlatformGroup() {
@@ -57,6 +57,6 @@ public class PlatformSpawnController: MonoBehaviour {
 
     private void OnDestroy()
     {
-        Messenger.RemoveListener(EventsConfig.PlatformSpawnEvent, SpawnPlatformGroup);
+        Messenger.RemoveListener(EventsConfig.OnPlatformSpawnEvent, SpawnPlatformGroup);
     }
 }

@@ -3,11 +3,19 @@ using System.Collections;
 
 public class EventsConfig
 {
-    public const string PlatformSpawnEvent = "event.platform.spawn";
-    public const string CollectMagicSphereEvent = "event.collect.magic.sphere";
-    public const string PlayerDistanceChanedEvent = "event.player.disctance.changed";
-    public const string GameEnd = "event.game.end";
-    public const string NextSong = "event.song.next";
-	public const string StopSong = "event.song.stop";
-    public const string DebugFpsEvent = "event.debug.fps";
+    //states
+    public const string OnGameStateChangedEvent = "event.game.state.changed";
+	public const string OnGameOverEvent = "event.game.end";
+
+    //game logic
+    public const string OnPlatformSpawnEvent = "event.platform.spawn";
+    public const string OnCollectMagicSphereEvent = "event.collect.magic.sphere";
+
+    //music
+    public const string OnNextSong = "event.song.next";
+	public const string OnStopSong = "event.song.stop";
+
+    //ui
+	public const string OnPlayerDistanceChanedEvent = "event.player.disctance.changed";
+    public const string OnFpsChangedEvent = "event.debug.fps";
 }

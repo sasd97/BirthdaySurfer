@@ -1,25 +1,28 @@
 using UnityEngine;
-using System.Collections;
 using UnityEngine.UI;
 
-public class DebugCanvasDrawer: MonoBehaviour
+[AddComponentMenu("UI/Controllers/Debug Info Script")]
+public class UiDebug: MonoBehaviour
 {
+    private float _defaultFpsValue = 60.0f;
+
     [Header("UI Service References")]
-    public GameObject ui;
+    [SerializeField] private GameObject _debugUi;
 	[SerializeField] private Text _debugInfoText;
 
     private void Awake()
     {
         if (!Debug.isDebugBuild) {
-            Destroy(ui);
+            Destroy(_debugUi);
             return;
         }
 
-        OnDebug(60.0f);
-        Messenger<float>.AddListener(EventsConfig.DebugFpsEvent, OnDebug);
+        OnDebugLabelDraw(_defaultFpsValue);
+
+        Messenger<float>.AddListener(EventsConfig.OnFpsChangedEvent, OnDebugLabelDraw);
     }
 
-	private void OnDebug(float fps)
+    private void OnDebugLabelDraw(float fps)
 	{
 
 		string text = string.Format(
@@ -36,6 +39,6 @@ public class DebugCanvasDrawer: MonoBehaviour
 
     private void OnDestroy()
     {
-        Messenger<float>.RemoveListener(EventsConfig.DebugFpsEvent, OnDebug);
+        Messenger<float>.RemoveListener(EventsConfig.OnFpsChangedEvent, OnDebugLabelDraw);
     }
 }

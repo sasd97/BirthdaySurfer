@@ -6,7 +6,7 @@ public class SpawnObstaclesRule: CollisionRule<string>
 {
     public void Apply()
     {
-        Messenger.Broadcast(EventsConfig.PlatformSpawnEvent); 
+        Messenger.Broadcast(EventsConfig.OnPlatformSpawnEvent); 
     }
 
     public bool IsApplicable(string data)

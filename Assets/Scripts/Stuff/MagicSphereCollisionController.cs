@@ -1,5 +1,4 @@
 using UnityEngine;
-using System.Collections;
 
 [RequireComponent(typeof(AudioSource))]
 [AddComponentMenu("Platform/Stuff/Magic Sphere Collision Controller")]
@@ -8,7 +7,8 @@ public class MagicSphereCollisionController: MonoBehaviour
 	[Header("Destroy Attributes")]
 	[SerializeField] private string _destroyerTag = TagsConfig.PlayerTag;
     [SerializeField] private GameObject _participlePrefab;
-    [SerializeField] private long participleObjectLifeDuration = 3L;
+    [SerializeField] private long _participleObjectLifeDuration = 3L;
+    [SerializeField] private long _magicSphereDeadDuration = 1L; 
 
     private AudioSource _audioSource;
 
@@ -22,9 +22,9 @@ public class MagicSphereCollisionController: MonoBehaviour
         if (other.tag != _destroyerTag) return;
 		_audioSource.Play();
         GameObject p = Instantiate(_participlePrefab, this.transform.position, this.transform.rotation);
-        Destroy(this.gameObject, 1L);
-        Destroy(p, participleObjectLifeDuration);
+        Destroy(this.gameObject, _magicSphereDeadDuration);
+        Destroy(p, _participleObjectLifeDuration);
         GameManager.GetInstance().IncreaseScore();
-        Messenger.Broadcast(EventsConfig.CollectMagicSphereEvent);
+        Messenger.Broadcast(EventsConfig.OnCollectMagicSphereEvent);
 	}
 }

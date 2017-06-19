@@ -3,8 +3,7 @@ using System.Collections;
 
 public class FpsCounter: MonoBehaviour
 {
-
-	float deltaTime = 0.0f;
+    private float _deltaTime;
 
     private void Awake()
     {
@@ -14,15 +13,19 @@ public class FpsCounter: MonoBehaviour
 
     void Update()
 	{
-		deltaTime += (Time.deltaTime - deltaTime) * 0.1f;
-        if (System.Math.Abs(deltaTime) < 0.001) {
-            Messenger<float>.Broadcast(EventsConfig.DebugFpsEvent, 60.0f);
-            return;
-        }
-		float msec = deltaTime * 1000.0f;
-		float fps = 1.0f / deltaTime;
-        Messenger<float>.Broadcast(EventsConfig.DebugFpsEvent, fps);
+		_deltaTime += (Time.deltaTime - _deltaTime) * 0.1f;
+
+        if (!IsActive()) return;
+
+		float msec = _deltaTime * 1000.0f;
+		float fps = 1.0f / _deltaTime;
+
+        Messenger<float>.Broadcast(EventsConfig.OnFpsChangedEvent, fps);
 	}
 
-    
+    private bool IsActive() {
+        return StateManager.GetInstance().StateIs(
+            StateManager.States.PLAYED
+        );
+    }
 }

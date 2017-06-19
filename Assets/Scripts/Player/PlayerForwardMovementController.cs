@@ -12,7 +12,7 @@ public class PlayerForwardMovementController: MonoBehaviour
 
     private void Awake()
     {
-        Messenger.AddListener(EventsConfig.CollectMagicSphereEvent, IncreaseSpeed);
+        Messenger.AddListener(EventsConfig.OnCollectMagicSphereEvent, IncreaseSpeed);
     }
 
     void IncreaseSpeed() {

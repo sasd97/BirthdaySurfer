@@ -9,7 +9,7 @@ public class PlayerStabilizer: MonoBehaviour {
 
     private void Awake()
     {
-        Messenger.AddListener(EventsConfig.GameEnd, OnGameOver);
+        Messenger.AddListener(EventsConfig.OnGameOverEvent, OnGameOver);
     }
 
     void OnGameOver() 
@@ -24,6 +24,6 @@ public class PlayerStabilizer: MonoBehaviour {
 
     private void OnDestroy()
     {
-        Messenger.RemoveListener(EventsConfig.GameEnd, OnGameOver);
+        Messenger.RemoveListener(EventsConfig.OnGameOverEvent, OnGameOver);
     }
 }

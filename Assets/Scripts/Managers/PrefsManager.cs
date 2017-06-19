@@ -1,11 +1,12 @@
 using UnityEngine;
 using System.Collections;
 
+[AddComponentMenu("Managers/Prefs")]
 public class PrefsManager: MonoBehaviour
 {
     private void Awake()
     {
-        Messenger.AddListener(EventsConfig.GameEnd, OnSave);
+        Messenger.AddListener(EventsConfig.OnGameOverEvent, OnSave);
     }
 
     void OnSave() 
@@ -15,6 +16,6 @@ public class PrefsManager: MonoBehaviour
 
     private void OnDestroy()
     {
-        Messenger.RemoveListener(EventsConfig.GameEnd, OnSave);
+        Messenger.RemoveListener(EventsConfig.OnGameOverEvent, OnSave);
     }
 }

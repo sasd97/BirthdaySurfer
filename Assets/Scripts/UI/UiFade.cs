@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+[AddComponentMenu("UI/Controllers/Fade Script")]
 public class UiFade: MonoBehaviour
 {
 
@@ -10,17 +11,17 @@ public class UiFade: MonoBehaviour
     [SerializeField] private Image _image;
     [SerializeField] private AnimationCurve _animationCurve;
 
-	void Start ()
+    public void FadeInAsync()
 	{
-	    StartCoroutine(FadeIn());
+	    StartCoroutine(FadeInSync());
 	}
 
-    public void FadeTo(string sceneName)
+    public void FadeToAsync(string sceneName)
     {
-        StartCoroutine(FadeOut(sceneName));
+        StartCoroutine(FadeOutSync(sceneName));
     }
 
-    public IEnumerator FadeIn()
+    private IEnumerator FadeInSync()
     {
         float deltaTime = 1f;
 
@@ -33,7 +34,7 @@ public class UiFade: MonoBehaviour
         }
     }
 
-    public IEnumerator FadeOut(string sceneName)
+    private IEnumerator FadeOutSync(string sceneName)
     {
         float deltaTime = 0f;
 

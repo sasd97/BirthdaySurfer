@@ -11,6 +11,6 @@ public class ObstacleCollisionController: MonoBehaviour
 	{
 		if (other.tag != _collisionObjectTag) return;
         Debug.Log("Game is ended");
-        Messenger.Broadcast(EventsConfig.GameEnd);
+        Messenger.Broadcast(EventsConfig.OnGameOverEvent);
 	}
 }
