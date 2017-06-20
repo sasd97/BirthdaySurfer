@@ -9,10 +9,10 @@ public class PlayerStabilizer: MonoBehaviour {
 
     private void Awake()
     {
-        Messenger.AddListener(EventsConfig.OnGameOverEvent, OnGameOver);
+        Messenger.AddListener(EventsConfig.OnUserResetTag, OnPlayerResetTag);
     }
 
-    void OnGameOver() 
+    void OnPlayerResetTag() 
     {
         player.gameObject.tag = TagsConfig.Untagged;
     }
@@ -24,6 +24,6 @@ public class PlayerStabilizer: MonoBehaviour {
 
     private void OnDestroy()
     {
-        Messenger.RemoveListener(EventsConfig.OnGameOverEvent, OnGameOver);
+        Messenger.RemoveListener(EventsConfig.OnUserResetTag, OnPlayerResetTag);
     }
 }

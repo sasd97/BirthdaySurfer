@@ -6,6 +6,7 @@ public class EventsConfig
     //states
     public const string OnGameStateChangedEvent = "event.game.state.changed";
 	public const string OnGameOverEvent = "event.game.end";
+    public const string OnUserResetTag = "event.user.reset.tag";
 
     //game logic
     public const string OnPlatformSpawnEvent = "event.platform.spawn";

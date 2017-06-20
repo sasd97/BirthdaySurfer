@@ -41,7 +41,9 @@ public class UiGameOverMenu: MonoBehaviour
 	public void Retry()
 	{
 		Toggle();
+		GameManager.GetInstance().OnReset();
 		StateManager.GetInstance().ReloadState();
+        Messenger.Broadcast(EventsConfig.OnUserResetTag);
         _sceneFader.FadeToAsync(SceneManager.GetActiveScene().name);
 	}
 
