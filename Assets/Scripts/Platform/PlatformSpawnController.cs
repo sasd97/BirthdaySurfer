@@ -20,14 +20,14 @@ public class PlatformSpawnController: MonoBehaviour {
     [Header("Stuff Spawn Attributes")]
     [SerializeField] private GameObject _obstaclePrefab;
     [SerializeField] private Transform[] _obstaclePositions;
-    [SerializeField] private GameObject _magicSpherePrefab;
+    [SerializeField] private GameObject[] _magicSpherePrefabs;
     [SerializeField] private Transform[] _magicSpherePositions;
 
     private void Awake()
     {
         _platformGenerator = new PlatformGenerator(_platformPrefab);
         _obstacleGenerator = new ObstacleGenerator(_obstaclePrefab, _obstaclePositions);
-        _magicSphereGenerator = new MagicSphereGenerator(_magicSpherePrefab, _magicSpherePositions);
+        _magicSphereGenerator = new MagicSphereGenerator(_magicSpherePrefabs, _magicSpherePositions);
         Messenger.AddListener(EventsConfig.OnPlatformSpawnEvent, SpawnPlatformGroup);
     }
 
@@ -37,8 +37,8 @@ public class PlatformSpawnController: MonoBehaviour {
 
     private GameObject SpawnPlatform(int iteration) {
         GameObject platform = _platformGenerator.Generate(ChoosePlatfromTag(iteration), this.transform);
-        GameObject obstacle = _obstacleGenerator.Generate(TagsConfig.ObstacleTag, platform.transform);
-        GameObject magicSphere = _magicSphereGenerator.Generate(TagsConfig.MagicSphereTag, platform.transform);
+        _obstacleGenerator.Generate(TagsConfig.ObstacleTag, platform.transform);
+        _magicSphereGenerator.Generate(TagsConfig.MagicSphereTag, platform.transform);
         FinilizeGeneration();
         return platform;
     }

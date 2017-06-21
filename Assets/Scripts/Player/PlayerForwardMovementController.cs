@@ -16,7 +16,7 @@ public class PlayerForwardMovementController: MonoBehaviour
     }
 
     void IncreaseSpeed(int delta) {
-        _characterSpeed = Mathf.Clamp(_characterSpeed + _speedFactor, _characterSpeed, _speedLimit);
+        _characterSpeed = Mathf.Clamp(_characterSpeed + _speedFactor * delta, _characterSpeed, _speedLimit);
     }
 
     void Update()

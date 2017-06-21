@@ -27,6 +27,8 @@ public class UiGameOverMenu: MonoBehaviour
     }
 
     private void OnScoreDraw() {
+        Debug.Log(_gameStore.GetInteger("score"));
+        Debug.Log(_gameStore.GetInteger("record"));
 		_scoreText.text = _gameStore.GetInteger("score").ToString();
     }
 

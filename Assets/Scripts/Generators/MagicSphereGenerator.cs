@@ -3,22 +3,35 @@ using System.Collections;
 
 public class MagicSphereGenerator : Generator
 {
-    private GameObject _prefab;
+    private GameObject[] _prefabs;
     private Transform[] _positions;
 
-    public MagicSphereGenerator(GameObject prefab, Transform[] positions)
+    public MagicSphereGenerator(GameObject[] prefabs, Transform[] positions)
     {
-        _prefab = prefab;
+        _prefabs = prefabs;
         _positions = positions;
     }
 
     public GameObject Generate(string tag, Transform parent)
     {
-        if (Random.Range(0, 100) < 85) return null;
-        GameObject obstacle = Object.Instantiate(_prefab, GetPosition());
-        obstacle.transform.parent = parent;
-        return obstacle;
+        int factor = Random.Range(0, 100);
+        if (factor < 85) return null;
+        if (factor < 95) return SpawOrdinarySphere(parent);
+        return SpawSpecialSphere(parent);
     }
+
+    private GameObject SpawOrdinarySphere(Transform parent) {
+		GameObject obstacle = Object.Instantiate(_prefabs[0], GetPosition());
+		obstacle.transform.parent = parent;
+		return obstacle;
+    }
+
+	private GameObject SpawSpecialSphere(Transform parent)
+	{
+		GameObject obstacle = Object.Instantiate(_prefabs[1], GetPosition());
+		obstacle.transform.parent = parent;
+		return obstacle;
+	}
 
     private Transform GetPosition()
     {

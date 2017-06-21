@@ -48,7 +48,6 @@ public class GameController: MonoBehaviour
         Store<string> gameStore = GetStore("game");
 
         prefsStore.Put("record", gameStore.GetInteger("record"));
-        gameStore.Clear();
     }
 
     private void OnDestroy()
