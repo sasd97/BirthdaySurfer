@@ -6,6 +6,8 @@ using UnityEngine.SceneManagement;
 [AddComponentMenu("UI/Controllers/\"Game Over\" Script")]
 public class UiGameOverMenu: MonoBehaviour
 {
+	private Store<string> _gameStore;
+
     [Header("Controllers Refereneces")]
 	[SerializeField] private AudioController _audioController;
 
@@ -15,35 +17,33 @@ public class UiGameOverMenu: MonoBehaviour
     [SerializeField] private GameObject _gameOverUi;
 
     [Header("Scene References")]
+    [SerializeField] private GameController _gameController;
     [SerializeField] private string _menuSceneName = "MainMenu";
 
-    private void Awake()
+    void Start()
     {
+        _gameStore = _gameController.GetStore("game");
         Messenger.AddListener(EventsConfig.OnGameOverEvent, Toggle);
     }
 
+    private void OnScoreDraw() {
+		_scoreText.text = _gameStore.GetInteger("score").ToString();
+    }
+
     public void Toggle()
-	{
-        _scoreText.text = GameManager.GetInstance().GetScore().ToString();
+    {
+        OnScoreDraw();
         _gameOverUi.SetActive(!_gameOverUi.activeSelf);
 
-		if (_gameOverUi.activeSelf)
-		{
-            GameManager.GetInstance().OnReset();
-			_audioController.SetVolumeToMin();
-            StateManager.GetInstance().OverGame();
-        } else {
-            _audioController.SetVolumeToMin();
-            Time.timeScale = 1.0f;
-        }
+        if (_gameOverUi.activeSelf) Over();
+        else Resume();
 	}
 
 	public void Retry()
 	{
-		Toggle();
-		GameManager.GetInstance().OnReset();
+        Time.timeScale = 1.0f;
 		StateManager.GetInstance().ReloadState();
-        Messenger.Broadcast(EventsConfig.OnUserResetTag);
+		Messenger.Broadcast(EventsConfig.OnUserResetTag);
         _sceneFader.FadeToAsync(SceneManager.GetActiveScene().name);
 	}
 
@@ -52,6 +52,16 @@ public class UiGameOverMenu: MonoBehaviour
 		Toggle();
 		_sceneFader.FadeToAsync(_menuSceneName);
 	}
+
+    private void Over() {
+		_audioController.SetVolumeToMin();
+		Time.timeScale = 0.0f;
+		StateManager.GetInstance().OverGame();
+    }
+
+    private void Resume() {
+        Time.timeScale = 1.0f;
+    }
 
     private void OnDestroy()
     {

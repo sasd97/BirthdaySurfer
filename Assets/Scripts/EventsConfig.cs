@@ -10,7 +10,7 @@ public class EventsConfig
 
     //game logic
     public const string OnPlatformSpawnEvent = "event.platform.spawn";
-    public const string OnCollectMagicSphereEvent = "event.collect.magic.sphere";
+    public const string OnIncreaseScoreEvent = "event.collect.increase.score";
 
     //music
     public const string OnNextSong = "event.song.next";

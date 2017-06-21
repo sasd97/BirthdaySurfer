@@ -5,15 +5,21 @@ using UnityEngine.UI;
 [AddComponentMenu("UI/Controllers/Base Game Ui Script")]
 public class UiBase: MonoBehaviour
 {
+    private Store<string> _gameStore;
+
     [Header("Ui References")]
     [SerializeField] private Text _scoreText;
     [SerializeField] private Text _distanceText;
 
-    private void Awake()
-    {
-        OnScoreLabelDraw();
+    [Header("Scene References")]
+    [SerializeField] private GameController _gameController;
 
-        Messenger.AddListener(EventsConfig.OnCollectMagicSphereEvent, OnScoreLabelDraw);
+    void Start()
+    {
+        _gameStore = _gameController.GetStore("game");
+        OnScoreLabelDraw(0);
+
+        Messenger<int>.AddListener(EventsConfig.OnIncreaseScoreEvent, OnScoreLabelDraw);
         Messenger<float>.AddListener(EventsConfig.OnPlayerDistanceChanedEvent, OnDistanceLabelDraw);
     }
 
@@ -21,16 +27,16 @@ public class UiBase: MonoBehaviour
         _distanceText.text = string.Format("<b>{0:0.00}</b> m", distance / 10);
     }
 
-    private void OnScoreLabelDraw() 
+    private void OnScoreLabelDraw(int delta) 
     {
-        int score = GameManager.GetInstance().GetScore();
-        int record = GameManager.GetInstance().GetRecord();
+        int score = _gameStore.GetInteger("score");
+        int record = _gameStore.GetInteger("record");
         _scoreText.text = string.Format("Score: <b>{0}</b>\nRecord: <b>{1}</b>", score, record);
     }
 
     private void OnDestroy()
     {
-        Messenger.RemoveListener(EventsConfig.OnCollectMagicSphereEvent, OnScoreLabelDraw);
+        Messenger<int>.RemoveListener(EventsConfig.OnIncreaseScoreEvent, OnScoreLabelDraw);
         Messenger<float>.RemoveListener(EventsConfig.OnPlayerDistanceChanedEvent, OnDistanceLabelDraw);
     }
 }

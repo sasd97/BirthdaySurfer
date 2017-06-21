@@ -15,8 +15,9 @@ public class UiPauseMenu: MonoBehaviour
 
     [Header("Scene References")]
     [SerializeField] private string _menuSceneName = "MainMenu";
+    [SerializeField] private GameController _gameController;
 
-    private void Awake()
+    void Start()
     {
 		Messenger<string>.AddListener(EventsConfig.OnNextSong, OnUpdateCurrentMusic);
     }
@@ -40,25 +41,17 @@ public class UiPauseMenu: MonoBehaviour
         if (!IsPauseAvailable()) return;
 		_pauseUi.SetActive(!_pauseUi.activeSelf);
 
-		if (_pauseUi.activeSelf)
-		{
-            _audioController.SetVolumeToMin();
-            StateManager.GetInstance().PauseGame();
-		}
-		else
-		{
-            _audioController.SetVolumeToMax();
-            StateManager.GetInstance().ResumeGame();
-		}
+        if (_pauseUi.activeSelf) Pause();
+        else Resume();
 	}
 
 	public void Retry()
 	{
-		Toggle();
-        GameManager.GetInstance().OnReset();
-        StateManager.GetInstance().ReloadState();
-        Messenger.Broadcast(EventsConfig.OnUserResetTag);
-        _sceneFader.FadeToAsync(SceneManager.GetActiveScene().name);
+		Time.timeScale = 1.0f;
+        _pauseUi.SetActive(false);
+		StateManager.GetInstance().ReloadState();
+		Messenger.Broadcast(EventsConfig.OnUserResetTag);
+		_sceneFader.FadeToAsync(SceneManager.GetActiveScene().name);
 	}
 
 	public void Menu()
@@ -66,6 +59,18 @@ public class UiPauseMenu: MonoBehaviour
 		Toggle();
         _sceneFader.FadeToAsync(_menuSceneName);
 	}
+
+    private void Pause() {
+		_audioController.SetVolumeToMin();
+		Time.timeScale = 0.0f;
+		StateManager.GetInstance().PauseGame();
+    }
+
+    private void Resume() {
+		_audioController.SetVolumeToMax();
+		Time.timeScale = 1.0f;
+		StateManager.GetInstance().ResumeGame();
+    }
 
     private bool IsPauseAvailable() {
         return StateManager.GetInstance().StateIs(StateManager.States.PLAYED, StateManager.States.PAUSED);

@@ -20,11 +20,13 @@ public class MagicSphereCollisionController: MonoBehaviour
     private void OnTriggerEnter(Collider other)
 	{
         if (other.tag != _destroyerTag) return;
+
 		_audioSource.Play();
         GameObject p = Instantiate(_participlePrefab, this.transform.position, this.transform.rotation);
+
         Destroy(this.gameObject, _magicSphereDeadDuration);
         Destroy(p, _participleObjectLifeDuration);
-        GameManager.GetInstance().IncreaseScore();
-        Messenger.Broadcast(EventsConfig.OnCollectMagicSphereEvent);
+
+        Messenger<int>.Broadcast(EventsConfig.OnIncreaseScoreEvent, 1);
 	}
 }

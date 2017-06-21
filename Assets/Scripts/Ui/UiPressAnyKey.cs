@@ -7,6 +7,7 @@ public class UiPressAnyKey: MonoBehaviour
 
 	[Header("Controllers Refereneces")]
     [SerializeField] private AudioController _audioController;
+	[SerializeField] private GameController _gameController;
 
 	[Header("Ui References")]
     [SerializeField] private UiFade _sceneFader;
@@ -29,5 +30,6 @@ public class UiPressAnyKey: MonoBehaviour
         Destroy(_pressAnyKeyUi.gameObject);
 
         StateManager.GetInstance().StartGame();
+        Time.timeScale = 1.0f;
 	}
 }

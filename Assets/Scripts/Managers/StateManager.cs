@@ -31,30 +31,25 @@ public class StateManager
 
     public void StartGame() {
         UnlockWhile(States.AWAITING_START);
-		Time.timeScale = 1.0f;
         SwitchStateTo(States.PLAYED);
     }
 
     public void ResumeGame() {
         UnlockWhile(States.PAUSED);
-		Time.timeScale = 1.0f;
         SwitchStateTo(States.PLAYED);
     }
 
     public void PauseGame() {
         UnlockWhile(States.PLAYED);
-		Time.timeScale = 0.0f;
         SwitchStateTo(States.PAUSED);
     }
 
     public void OverGame() {
 		UnlockWhile(States.PLAYED);
-		Time.timeScale = 0.0f;
         SwitchStateTo(States.OVERED);
     }
 
     public void ReloadState() {
-        Time.timeScale = 1.0f;
         SwitchStateTo(States.AWAITING_START);
     }
 

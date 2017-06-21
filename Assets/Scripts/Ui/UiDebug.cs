@@ -10,7 +10,7 @@ public class UiDebug: MonoBehaviour
     [SerializeField] private GameObject _debugUi;
 	[SerializeField] private Text _debugInfoText;
 
-    private void Awake()
+    void Start()
     {
         if (!Debug.isDebugBuild) {
             Destroy(_debugUi);
