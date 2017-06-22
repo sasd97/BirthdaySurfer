@@ -3,7 +3,7 @@ using System.Collections;
 
 [RequireComponent(typeof(AudioSource))]
 [AddComponentMenu("Platform/Stuff/Twice Magic Sphere Collision Controller")]
-public class TwiceMagicSphereCollisionController: MonoBehaviour
+public class MagicTriangleCollisionController: MonoBehaviour
 {
 	[Header("Destroy Attributes")]
 	[SerializeField] private string _destroyerTag = TagsConfig.PlayerTag;
@@ -23,7 +23,7 @@ public class TwiceMagicSphereCollisionController: MonoBehaviour
 		if (other.tag != _destroyerTag) return;
 
 		_audioSource.Play();
-		GameObject p = Instantiate(_participlePrefab, this.transform.position, this.transform.rotation);
+        GameObject p = Instantiate(_participlePrefab, this.transform.position, Quaternion.identity);
 
 		Destroy(this.gameObject, _magicSphereDeadDuration);
 		Destroy(p, _participleObjectLifeDuration);

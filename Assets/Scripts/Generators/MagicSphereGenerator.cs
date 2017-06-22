@@ -16,7 +16,7 @@ public class MagicSphereGenerator : Generator
     {
         int factor = Random.Range(0, 100);
         if (factor < 85) return null;
-        if (factor < 95) return SpawOrdinarySphere(parent);
+        if (factor < 97) return SpawOrdinarySphere(parent);
         return SpawSpecialSphere(parent);
     }
 

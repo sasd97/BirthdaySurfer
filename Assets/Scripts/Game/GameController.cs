@@ -5,7 +5,8 @@ using System.Collections.Generic;
 [AddComponentMenu("Controllers/Game")]
 public class GameController: MonoBehaviour
 {
-    private Dictionary<string, Store<string>> _stores = new Dictionary<string, Store<string>>();
+    private GameStore _gameStore;
+    private PrefsStore _prefsStore;
 
     private void Awake()
     {
@@ -15,10 +16,8 @@ public class GameController: MonoBehaviour
 
     private void OnInit() 
     {
-        Store<string> prefsStore = new PrefsStore();
-
-        _stores.Add("prefs", prefsStore);
-        _stores.Add("game", new GameStore(prefsStore));
+        _prefsStore = new PrefsStore();
+        _gameStore = new GameStore(_prefsStore);
     }
 
     private void OnInitEvents() 
@@ -29,25 +28,22 @@ public class GameController: MonoBehaviour
 
     private void OnIncreaseScore(int delta) 
     {
-        Store<string> gameStore = GetStore("game");
-        int score = gameStore.GetInteger("score");
-        int record = gameStore.GetInteger("record");
+        int score = _gameStore.GetScore();
+        int record = _gameStore.GetRecord();
         score += delta;
-        if (score > record) gameStore.Put("record", score);
-        gameStore.Put("score", score);
+        if (score > record) _gameStore.SetRecord(score);
+        _gameStore.SetScore(score);
     }
 
-    public Store<string> GetStore(string key) 
+    public GameStore GetGameStore() 
     {
-        return _stores[key];
+        return _gameStore;
     }
 
     void OnGameOver() 
     {
-        Store<string> prefsStore = GetStore("prefs");
-        Store<string> gameStore = GetStore("game");
-
-        prefsStore.Put("record", gameStore.GetInteger("record"));
+        int record = _gameStore.GetRecord();
+        _prefsStore.PutInteger("record", record);
     }
 
     private void OnDestroy()

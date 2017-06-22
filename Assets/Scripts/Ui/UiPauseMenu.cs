@@ -14,7 +14,7 @@ public class UiPauseMenu: MonoBehaviour
     [SerializeField] private GameObject _pauseUi;
 
     [Header("Scene References")]
-    [SerializeField] private string _menuSceneName = "MainMenu";
+    [SerializeField] private string _menuSceneName = "MenuScene";
     [SerializeField] private GameController _gameController;
 
     void Start()
@@ -56,7 +56,9 @@ public class UiPauseMenu: MonoBehaviour
 
 	public void Menu()
 	{
-		Toggle();
+		Time.timeScale = 1.0f;
+		StateManager.GetInstance().ReloadState();
+		Messenger.Broadcast(EventsConfig.OnUserResetTag);
         _sceneFader.FadeToAsync(_menuSceneName);
 	}
 

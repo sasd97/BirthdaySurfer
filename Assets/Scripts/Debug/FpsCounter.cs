@@ -16,7 +16,8 @@ public class FpsCounter: MonoBehaviour
 		_deltaTime += (Time.deltaTime - _deltaTime) * 0.1f;
 
         if (!IsActive()) return;
-		float fps = 1.0f / _deltaTime;
+		float msec = _deltaTime * 1000.0f; 
+        float fps = 1.0f / _deltaTime;
 
         Messenger<float>.Broadcast(EventsConfig.OnFpsChangedEvent, fps);
 	}

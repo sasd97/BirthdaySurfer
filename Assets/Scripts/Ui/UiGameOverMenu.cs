@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 [AddComponentMenu("UI/Controllers/\"Game Over\" Script")]
 public class UiGameOverMenu: MonoBehaviour
 {
-	private Store<string> _gameStore;
+    private GameStore _gameStore;
 
     [Header("Controllers Refereneces")]
 	[SerializeField] private AudioController _audioController;
@@ -18,18 +18,16 @@ public class UiGameOverMenu: MonoBehaviour
 
     [Header("Scene References")]
     [SerializeField] private GameController _gameController;
-    [SerializeField] private string _menuSceneName = "MainMenu";
+    [SerializeField] private string _menuSceneName = "MenuScene";
 
     void Start()
     {
-        _gameStore = _gameController.GetStore("game");
+        _gameStore = _gameController.GetGameStore();
         Messenger.AddListener(EventsConfig.OnGameOverEvent, Toggle);
     }
 
     private void OnScoreDraw() {
-        Debug.Log(_gameStore.GetInteger("score"));
-        Debug.Log(_gameStore.GetInteger("record"));
-		_scoreText.text = _gameStore.GetInteger("score").ToString();
+        _scoreText.text = _gameStore.GetScore().ToString();
     }
 
     public void Toggle()
@@ -51,7 +49,9 @@ public class UiGameOverMenu: MonoBehaviour
 
 	public void Menu()
 	{
-		Toggle();
+		Time.timeScale = 1.0f;
+		StateManager.GetInstance().ReloadState();
+		Messenger.Broadcast(EventsConfig.OnUserResetTag);
 		_sceneFader.FadeToAsync(_menuSceneName);
 	}
 

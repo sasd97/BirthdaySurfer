@@ -5,7 +5,7 @@ using UnityEngine.UI;
 [AddComponentMenu("UI/Controllers/Base Game Ui Script")]
 public class UiBase: MonoBehaviour
 {
-    private Store<string> _gameStore;
+    private GameStore _gameStore;
 
     [Header("Ui References")]
     [SerializeField] private Text _scoreText;
@@ -16,7 +16,7 @@ public class UiBase: MonoBehaviour
 
     void Start()
     {
-        _gameStore = _gameController.GetStore("game");
+        _gameStore = _gameController.GetGameStore();
         OnScoreLabelDraw(0);
 
         Messenger<int>.AddListener(EventsConfig.OnIncreaseScoreEvent, OnScoreLabelDraw);
@@ -29,8 +29,8 @@ public class UiBase: MonoBehaviour
 
     private void OnScoreLabelDraw(int delta) 
     {
-        int score = _gameStore.GetInteger("score");
-        int record = _gameStore.GetInteger("record");
+        int score = _gameStore.GetScore();
+        int record = _gameStore.GetRecord();
         _scoreText.text = string.Format("Score: <b>{0}</b>\nRecord: <b>{1}</b>", score, record);
     }
 

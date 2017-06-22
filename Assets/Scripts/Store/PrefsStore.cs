@@ -4,6 +4,26 @@ using System;
 
 public class PrefsStore : Store<string>
 {
+	public void PutBoolean(string key, bool val)
+	{
+		PlayerPrefs.SetInt(key, val ? 1 : 0);
+	}
+
+	public void PutInteger(string key, int val)
+	{
+		PlayerPrefs.SetInt(key, val);
+	}
+
+	public void PutFloat(string key, float val)
+	{
+        PlayerPrefs.SetFloat(key, val);
+	}
+
+	public void PutString(string key, string val)
+	{
+        PlayerPrefs.SetString(key, val);
+	}
+
     public bool GetBoolean(string key, bool defaultValue = false)
     {
         if (!PlayerPrefs.HasKey(key)) return defaultValue;
@@ -21,38 +41,9 @@ public class PrefsStore : Store<string>
         return PlayerPrefs.GetInt(key, defaultValue);
     }
 
-    public long GetLong(string key, long defaultValue = 0)
-    {
-        return defaultValue;
-    }
-
     public string GetString(string key, string defaultValue = "")
     {
         return PlayerPrefs.GetString(key, defaultValue);
-    }
-
-    public Store<string> Put<T>(string key, T obj)
-    {
-        if (obj is bool) 
-        {
-            PlayerPrefs.SetInt(key, Convert.ToBoolean(obj) ? 1 : 0);
-		}
-		else if (obj is int)
-		{
-            PlayerPrefs.SetInt(key, Convert.ToInt32(obj));
-		} 
-        else if (obj is float)
-        {
-            PlayerPrefs.SetFloat(key, Convert.ToSingle(obj));
-        }
-        else if (obj is string)
-		{
-            PlayerPrefs.SetString(key, Convert.ToString(obj));
-		}
-
-        Debug.Log("Putted key: " + key + " value: " + obj);
-        PlayerPrefs.Save();
-        return this;
     }
 
     public void Remove(string key)
