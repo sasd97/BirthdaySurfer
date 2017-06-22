@@ -6,6 +6,10 @@ using UnityEngine.SceneManagement;
 public class UiMenu: MonoBehaviour {
 
     public void LoadGame() {
-		SceneManager.LoadScene("RunScene");
+        SceneManager.LoadSceneAsync("RunScene");
+    }
+
+    public void QuitApp() {
+        Application.Quit();
     }
 }
